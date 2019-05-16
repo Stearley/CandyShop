@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CandyShopDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Byers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Byers" FromRole="Byers" ToRole="Orders" />
+  </EntityType>
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="SwCats" Relationship="Self.FK_SwCats_Categories" FromRole="Categories" ToRole="SwCats" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdB" Type="Int32" Nullable="false" />
+    <Property Name="IdS" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Byers" Relationship="Self.FK_Orders_Byers" FromRole="Orders" ToRole="Byers" />
+    <NavigationProperty Name="Sweets" Relationship="Self.FK_Orders_Sweets" FromRole="Orders" ToRole="Sweets" />
+  </EntityType>
+  <EntityType Name="SwCats">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdS" Type="Int32" Nullable="false" />
+    <Property Name="IdC" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Categories" Relationship="Self.FK_SwCats_Categories" FromRole="SwCats" ToRole="Categories" />
+    <NavigationProperty Name="Sweets" Relationship="Self.FK_SwCats_Sweets" FromRole="SwCats" ToRole="Sweets" />
+  </EntityType>
+  <EntityType Name="Sweets">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Precision="16" Scale="2" Nullable="false" />
+    <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="ImageMimeType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Sweets" FromRole="Sweets" ToRole="Orders" />
+    <NavigationProperty Name="SwCats" Relationship="Self.FK_SwCats_Sweets" FromRole="Sweets" ToRole="SwCats" />
+  </EntityType>
+  <Association Name="FK_Orders_Byers">
+    <End Role="Byers" Type="Self.Byers" Multiplicity="1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Byers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="IdB" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SwCats_Categories">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="SwCats" Type="Self.SwCats" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SwCats">
+        <PropertyRef Name="IdC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_Sweets">
+    <End Role="Sweets" Type="Self.Sweets" Multiplicity="1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sweets">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="IdS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SwCats_Sweets">
+    <End Role="Sweets" Type="Self.Sweets" Multiplicity="1" />
+    <End Role="SwCats" Type="Self.SwCats" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sweets">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SwCats">
+        <PropertyRef Name="IdS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CandyShopDbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Byers" EntityType="Self.Byers" />
+    <EntitySet Name="Categories" EntityType="Self.Categories" />
+    <EntitySet Name="Orders" EntityType="Self.Orders" />
+    <EntitySet Name="SwCats" EntityType="Self.SwCats" />
+    <EntitySet Name="Sweets" EntityType="Self.Sweets" />
+    <AssociationSet Name="FK_Orders_Byers" Association="Self.FK_Orders_Byers">
+      <End Role="Byers" EntitySet="Byers" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SwCats_Categories" Association="Self.FK_SwCats_Categories">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="SwCats" EntitySet="SwCats" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_Sweets" Association="Self.FK_Orders_Sweets">
+      <End Role="Sweets" EntitySet="Sweets" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SwCats_Sweets" Association="Self.FK_SwCats_Sweets">
+      <End Role="Sweets" EntitySet="Sweets" />
+      <End Role="SwCats" EntitySet="SwCats" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

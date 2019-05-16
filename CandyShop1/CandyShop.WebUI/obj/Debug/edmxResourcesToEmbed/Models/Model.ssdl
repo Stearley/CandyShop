@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CandyShopDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Byers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdB" Type="int" Nullable="false" />
+    <Property Name="IdS" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SwCats">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdS" Type="int" Nullable="false" />
+    <Property Name="IdC" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sweets">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Price" Type="decimal" Precision="16" Scale="2" Nullable="false" />
+    <Property Name="ImageData" Type="varbinary(max)" />
+    <Property Name="ImageMimeType" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_Orders_Byers">
+    <End Role="Byers" Type="Self.Byers" Multiplicity="1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Byers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="IdB" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_Sweets">
+    <End Role="Sweets" Type="Self.Sweets" Multiplicity="1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sweets">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="IdS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SwCats_Categories">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="SwCats" Type="Self.SwCats" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SwCats">
+        <PropertyRef Name="IdC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SwCats_Sweets">
+    <End Role="Sweets" Type="Self.Sweets" Multiplicity="1" />
+    <End Role="SwCats" Type="Self.SwCats" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sweets">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SwCats">
+        <PropertyRef Name="IdS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CandyShopDbModelStoreContainer">
+    <EntitySet Name="Byers" EntityType="Self.Byers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SwCats" EntityType="Self.SwCats" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sweets" EntityType="Self.Sweets" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Orders_Byers" Association="Self.FK_Orders_Byers">
+      <End Role="Byers" EntitySet="Byers" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_Sweets" Association="Self.FK_Orders_Sweets">
+      <End Role="Sweets" EntitySet="Sweets" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SwCats_Categories" Association="Self.FK_SwCats_Categories">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="SwCats" EntitySet="SwCats" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SwCats_Sweets" Association="Self.FK_SwCats_Sweets">
+      <End Role="Sweets" EntitySet="Sweets" />
+      <End Role="SwCats" EntitySet="SwCats" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
